@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+#include <stdlib.h>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -7,13 +8,16 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+
+  ostringstream my_str;
+
   ifstream aux(argv[2]);
   long long int V,K;
   // cin>>V;
   // cin>>K;
   aux >> V >> K;
 
-  vector<pair<int,pair<int,int>>> Ys;
+  vector<pair<int,pair<int,int> > > Ys;
   vector<int> indices;
 
   for(int vert = 1; vert <= V; vert++)
@@ -30,7 +34,7 @@ int main(int argc, char* argv[])
   ifstream infile(argv[1]);
   string line;
   vector<int> tokens;
-  vector<vector<int>> parts;
+  vector<vector<int> > parts;
   for(int i = 0; i< K; i++)
   {
     vector<int> tmp;
@@ -52,12 +56,16 @@ int main(int argc, char* argv[])
     stringstream check1(line);
     string intermediate;
     while(getline(check1, intermediate, ' '))
-        tokens.push_back(stoi(intermediate));
+    {
+        // tokens.push_back(stoi(intermediate));
+        tokens.push_back(atoi(intermediate.c_str()));
+    }
   }
 
   vector<int>::iterator it;
-  for(auto w: tokens)
+  for(int ind = 0; ind < tokens.size(); ind++)
   {
+    int w = tokens.at(ind);
     if(w>0)
     {
       it = find (indices.begin(), indices.end(), w);
@@ -73,8 +81,9 @@ int main(int argc, char* argv[])
   }
   freopen(argv[3],"w",stdout);
   int count = 1;
-  for(auto w:parts)
+  for(int ind = 0; ind < parts.size(); ind++)
   {
+    vector<int> w = parts.at(ind);
     cout <<  "#" << count++ << " " << w.size() << endl;
     for(int s = 0; s < w.size(); s++)
     {
