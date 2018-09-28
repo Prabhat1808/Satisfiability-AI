@@ -5,11 +5,13 @@ using namespace std;
 #include <string>
 #include <stdio.h>
 
-int main()
+int main(int argc, char* argv[])
 {
+  ifstream aux(argv[2]);
   long long int V,K;
-  cin>>V;
-  cin>>K;
+  // cin>>V;
+  // cin>>K;
+  aux >> V >> K;
 
   vector<pair<int,pair<int,int>>> Ys;
   vector<int> indices;
@@ -25,9 +27,7 @@ int main()
 		}
 	}
 
-
-
-  ifstream infile("out");
+  ifstream infile(argv[1]);
   string line;
   vector<int> tokens;
   vector<vector<int>> parts;
@@ -71,13 +71,18 @@ int main()
       }
     }
   }
+  freopen(argv[3],"w",stdout);
   int count = 1;
   for(auto w:parts)
   {
     cout <<  "#" << count++ << " " << w.size() << endl;
-    for(auto c:w)
+    for(int s = 0; s < w.size(); s++)
     {
-      cout << c << " ";
+      cout << w.at(s);
+      if(s!=w.size()-1)
+      {
+        cout << " ";
+      }
     }
     cout << endl;
   }

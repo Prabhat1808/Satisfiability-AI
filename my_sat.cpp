@@ -14,14 +14,14 @@ using namespace std;
 
 //#define lli long long int;
 
-int main(){
+int main(int argc, char* argv[]){
 	// vector<pair<int,pair<int,int>>> Ys;
+	freopen(argv[1],"r",stdin);
 	long long int V,E,K;
 	cin>>V;
 	cin>>E;
 	cin>>K;
 	// string str = "";
-
 	long long int temp;
 	int x[(V*V)+1];
 	long long int v1,v2;
@@ -42,7 +42,7 @@ int main(){
 	}
 
 	ofstream myfile;
-  	myfile.open ("sat1.txt");
+  	myfile.open (argv[2]);
   	myfile<< "p cnf ";
 
   	long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
@@ -221,6 +221,10 @@ int main(){
 	// cout<<str<<"\n";
 	myfile.close();
 
+	ofstream aux;
+	aux.open (argv[3]);
+	aux << V << " " << K << "\n";
+	aux.close();
 	//Generate my hash mappings
 	// for(int vert = 1; vert <= V; vert++)
 	// {
