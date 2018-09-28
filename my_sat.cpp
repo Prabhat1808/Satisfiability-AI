@@ -7,19 +7,22 @@
 #include <cstring>
 #include <sstream>
 #include <fstream>
+#include <bits/stdc++.h>
+
 
 using namespace std;
 
 //#define lli long long int;
 
 int main(){
+	// vector<pair<int,pair<int,int>>> Ys;
 	long long int V,E,K;
 	cin>>V;
 	cin>>E;
 	cin>>K;
 	// string str = "";
 
-	long long int temp; 
+	long long int temp;
 	int x[(V*V)+1];
 	long long int v1,v2;
 	for(int i=1;i<=V;i++){
@@ -31,10 +34,10 @@ int main(){
 		cin>>v1;
 		cin>>v2;
 		if(v1<v2){
-			x[V*(v1-1)+v2] = 1;	
+			x[V*(v1-1)+v2] = 1;
 		}
 		else{
-			x[V*(v2-1)+v1] = 1;	
+			x[V*(v2-1)+v1] = 1;
 		}
 	}
 
@@ -43,13 +46,14 @@ int main(){
   	myfile<< "p cnf ";
 
   	long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
-  	
+		// cout << num_var;
+
   	myfile<<num_var;
   	myfile<<" ";
   	long long int num_clause = (V*(V-1)*(3*K+1))/2 + (V*(V-1)*(K+1))/2 + (3*V+1)*(K*K - K);
 
   	myfile<<num_clause;
-  	myfile<<" 0\n"; 
+  	myfile<<" 0\n";
 
 
 	for(int i=1;i<=V;i++){
@@ -112,7 +116,7 @@ int main(){
 			temp1 = V*V + i;
 			temp2 = V*V + j;
 			temp3 = V*V + V*K + (i-1)*V + j;
-			// str1 << temp1;		
+			// str1 << temp1;
 			// str2<<temp2;
 			// str3 << temp3;
 			for(int k=1;k<=K;k++){
@@ -137,8 +141,8 @@ int main(){
 				myfile<<" 0\n";
 
 				// str = str + "-" + str1.str() + " -" + str2.str() + " " + str3.str() + " 0\n";
-				// str = str + "-" + str3.str() + " " + str1.str() + " 0\n";				
-				// str = str + "-" + str3.str() + " " + str2.str() + " 0\n";				
+				// str = str + "-" + str3.str() + " " + str1.str() + " 0\n";
+				// str = str + "-" + str3.str() + " " + str2.str() + " 0\n";
 				temp1 += V;
 				temp2 += V;
 				temp3 += V*V;
@@ -162,7 +166,7 @@ int main(){
 					// str1<<temp;
 					myfile<<" ";
 					myfile<<temp;
-					//str = str + " " + str1.str(); 
+					//str = str + " " + str1.str();
 				}
 				//str = str + " 0\n";
 				myfile<<" 0\n";
@@ -177,7 +181,7 @@ int main(){
 				temp1 = V*V + (k1-1)*V + 1;
 				temp2 = V*V + (k2-1)*V + 1;
 				temp3 = V*V + V*K + V*V*K + (k1-1)*K + k2;
-				//str1 << temp1;		
+				//str1 << temp1;
 				//str2<<temp2;
 				//str3 << temp3;
 				for(int i=1;i<=V;i++){
@@ -188,7 +192,7 @@ int main(){
 					myfile<<" ";
 					myfile<<temp3;
 					myfile<<" 0\n";
-				
+
 					myfile<<"-";
 					myfile<<temp3;
 					myfile<<" -";
@@ -202,8 +206,8 @@ int main(){
 					myfile<<" 0\n";
 
 					// str = str + str1.str() + " -" + str2.str() + " " + str3.str() + " 0\n";
-					// str = str + "-" + str3.str() + " -" + str1.str() + " 0\n";				
-					// str = str + "-" + str3.str() + " " + str2.str() + " 0\n";				
+					// str = str + "-" + str3.str() + " -" + str1.str() + " 0\n";
+					// str = str + "-" + str3.str() + " " + str2.str() + " 0\n";
 					temp1 += 1;
 					temp2 += 1;
 					temp3 += K*K;
@@ -215,5 +219,21 @@ int main(){
 		}
 	}
 	// cout<<str<<"\n";
+	myfile.close();
 
+	//Generate my hash mappings
+	// for(int vert = 1; vert <= V; vert++)
+	// {
+	// 	int temp_vr = V*V + vert;
+	// 	for(int subg = 1; subg <= K; subg++)
+	// 	{
+	// 		Ys.push_back(make_pair(temp_vr,make_pair(vert,subg)));
+	// 		temp_vr += V;
+	// 	}
+	// }
+	// freopen("mappings.txt","w",stdout);
+	// for(auto w: Ys)
+	// {
+	// 	cout << w.first << " - > " << w.second.first << " , " <<w.second.second << endl;
+	// }
 }
