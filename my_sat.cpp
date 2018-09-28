@@ -10,17 +10,18 @@
 
 using namespace std;
 
-#define lli long long int;
+//#define lli long long int;
 
 int main(){
-	lli V,E,K;
+	long long int V,E,K;
 	cin>>V;
 	cin>>E;
 	cin>>K;
-	string str = "";
-	lli temp; 
+	// string str = "";
+
+	long long int temp; 
 	int x[(V*V)+1];
-	lli v1,v2;
+	long long int v1,v2;
 	for(int i=1;i<=V;i++){
 		for(int j=i+1;j<=V;j++){
 			x[V*(i-1)+j] = 0;
@@ -36,39 +37,183 @@ int main(){
 			x[V*(v2-1)+v1] = 1;	
 		}
 	}
+
+	ofstream myfile;
+  	myfile.open ("sat1.txt");
+  	myfile<< "p cnf ";
+
+  	long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
+  	
+  	myfile<<num_var;
+  	myfile<<" ";
+  	long long int num_clause = (V*(V-1)*(3*K+1))/2 + (V*(V-1)*(K+1))/2 + (3*V+1)*(K*K - K);
+
+  	myfile<<num_clause;
+  	myfile<<" 0\n"; 
+
+
 	for(int i=1;i<=V;i++){
 		for(int j=i+1;j<=V;j++){
-			ostringstream str1;
+			// ostringstream str1;
 			temp = V*(i-1)+j;
-			str1 << temp;
+			// str1 << temp;
 			if(x[V*(i-1)+j] == 0){
-				str = str + "-" + str1.str()+" 0\n";
+				myfile << "-";
+				myfile << temp;
+				myfile << " 0\n";
+				// str = str + "-" + str1.str()+" 0\n";
 			}
 			else{
-				str = str + str1.str()+" 0\n";
+				myfile << temp;
+				myfile << " 0\n";
 			}
 		}
 	}
-	string str_temp = "";
+	long long int temp1,temp2,temp3;
+	// string str_temp = "";
 	for(int i=1;i<=V;i++){
 		for(int j=i+1;j<=V;j++){
-			ostringstream str1,str2;
-			temp = V*(i-1)+j;
-			str1 << temp;
-			str2<<temp;
-			str = str + "-"+ str1.str();
+			ostringstream my_str;
+			// ostringstream str1,str2;
+			temp1 = V*(i-1)+j;
+			// str1 << temp;
+			// str2<<temp;
+			myfile << "-";
+			myfile << temp1;
+
+			// str = str + "-"+ str1.str();
 			temp = V*V + V*K + (i-1)*V + j;
-			str1<<temp;
+			// str1<<temp;
+			// cout<<str1<<" it\n";
 			for(int k=1;k<=K;k++){
-				str = str + " "+ str1.str();
-				str_temp = str_temp + str2.str() + " -" + str1.str()+" 0\n";
+				myfile << " ";
+				myfile << temp;
+
+				// str = str + " "+ str1.str();
+				my_str<<temp1;
+				my_str<<" -";
+				my_str<<temp;
+				my_str<<" 0\n";
+				// str_temp = str_temp + str2.str() + " -" + str1.str()+" 0\n";
 				temp += V*V;
-				str1<<temp;
+				// str1<<temp;
 			}
-			str = str + " 0\n";
-			str = str + str_temp;
+			//str = str + " 0\n";
+			myfile<<" 0\n";
+			myfile<< (my_str.str());
+			//str = str + str_temp;
 		}
 	}
 
+
+	for(int i=1;i<=V;i++){
+		for(int j=i+1;j<=V;j++){
+			// ostringstream str1,str2,str3;
+			temp1 = V*V + i;
+			temp2 = V*V + j;
+			temp3 = V*V + V*K + (i-1)*V + j;
+			// str1 << temp1;		
+			// str2<<temp2;
+			// str3 << temp3;
+			for(int k=1;k<=K;k++){
+				myfile<<"-";
+				myfile<<temp1;
+				myfile<<" -";
+				myfile<<temp2;
+				myfile<<" ";
+				myfile<<temp3;
+				myfile<<" 0\n";
+
+				myfile<<"-";
+				myfile<<temp3;
+				myfile<<" ";
+				myfile<<temp1;
+				myfile<<" 0\n";
+
+				myfile<<"-";
+				myfile<<temp3;
+				myfile<<" ";
+				myfile<<temp2;
+				myfile<<" 0\n";
+
+				// str = str + "-" + str1.str() + " -" + str2.str() + " " + str3.str() + " 0\n";
+				// str = str + "-" + str3.str() + " " + str1.str() + " 0\n";				
+				// str = str + "-" + str3.str() + " " + str2.str() + " 0\n";				
+				temp1 += V;
+				temp2 += V;
+				temp3 += V*V;
+				// str1<<temp1;
+				// str2<<temp2;
+				// str3<<temp3;
+			}
+		}
+	}
+
+	for(int k1=1;k1<=K;k1++){
+		for(int k2=1;k2<=K;k2++){
+			if(k1!=k2){
+				// ostringstream str1;
+				temp = V*V + V*K + V*V*K + (k1-1)*K + k2;
+				// str1<<temp;
+				myfile<<temp;
+				//str = str + str1.str();
+				for(int i=2;i<=V;i++){
+					temp += K*K;
+					// str1<<temp;
+					myfile<<" ";
+					myfile<<temp;
+					//str = str + " " + str1.str(); 
+				}
+				//str = str + " 0\n";
+				myfile<<" 0\n";
+			}
+		}
+	}
+
+	for(int k1=1;k1<=K;k1++){
+		for(int k2=1;k2<=K;k2++){
+			if(k1!=k2){
+				//ostringstream str1,str2,str3;
+				temp1 = V*V + (k1-1)*V + 1;
+				temp2 = V*V + (k2-1)*V + 1;
+				temp3 = V*V + V*K + V*V*K + (k1-1)*K + k2;
+				//str1 << temp1;		
+				//str2<<temp2;
+				//str3 << temp3;
+				for(int i=1;i<=V;i++){
+
+					myfile<<temp1;
+					myfile<<" -";
+					myfile<<temp2;
+					myfile<<" ";
+					myfile<<temp3;
+					myfile<<" 0\n";
+				
+					myfile<<"-";
+					myfile<<temp3;
+					myfile<<" -";
+					myfile<<temp1;
+					myfile<<" 0\n";
+
+					myfile<<"-";
+					myfile<<temp3;
+					myfile<<" ";
+					myfile<<temp2;
+					myfile<<" 0\n";
+
+					// str = str + str1.str() + " -" + str2.str() + " " + str3.str() + " 0\n";
+					// str = str + "-" + str3.str() + " -" + str1.str() + " 0\n";				
+					// str = str + "-" + str3.str() + " " + str2.str() + " 0\n";				
+					temp1 += 1;
+					temp2 += 1;
+					temp3 += K*K;
+					// str1<<temp1;
+					// str2<<temp2;
+					// str3<<temp3;
+				}
+			}
+		}
+	}
+	// cout<<str<<"\n";
 
 }
