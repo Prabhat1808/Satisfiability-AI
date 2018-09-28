@@ -45,7 +45,9 @@ int main(int argc, char* argv[]){
   	myfile.open (argv[2]);
   	myfile<< "p cnf ";
 
-  	long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
+  	// long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
+  	long long int num_var = V*V + V*K + V*V*K + V*K*K;
+
 		// cout << num_var;
 
   	myfile<<num_var;
