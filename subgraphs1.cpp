@@ -66,12 +66,12 @@ for(int subg = 1; subg <= K; subg++)
     if(line.compare("UNSAT")==0)
     {
       cout<<0;
-      sat = False;
+      sat = false;
       break;
     }
     if(line.compare("SAT")==0)
     {
-      sat = True;
+      sat = true;
       continue;
     }
 

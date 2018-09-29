@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
   // cin>>K;
   aux >> V >> K;
 
-  vector<pair<long long int,pair<int,int> > > Ys;
+  vector<pair<long long int,pair<long long int,long long int> > > Ys;
   vector<long long int> indices;
 
   // for(int vert = 1; vert <= V; vert++)
@@ -31,11 +31,11 @@ int main(int argc, char* argv[])
 	// 	}
 	// }
 
-int temp_vr;
-for(int subg = 1; subg <= K; subg++)
+long long int temp_vr;
+for(long long int subg = 1; subg <= K; subg++)
 {
   temp_vr = V*V + (subg-1)*V;
-  for(int vert = 1; vert <= V; vert++)
+  for(long long int vert = 1; vert <= V; vert++)
   {
     temp_vr += 1;
     Ys.push_back(make_pair(temp_vr,make_pair(vert,subg)));
@@ -51,11 +51,11 @@ for(int subg = 1; subg <= K; subg++)
 
   ifstream infile(argv[1]);
   string line;
-  vector<int> tokens;
-  vector<vector<int> > parts;
-  for(int i = 0; i< K; i++)
+  vector<long long int> tokens;
+  vector<vector<long long int> > parts;
+  for(long long int i = 0; i< K; i++)
   {
-    vector<int> tmp;
+    vector<long long int> tmp;
     parts.push_back(tmp);
   }
 
@@ -105,7 +105,7 @@ for(int subg = 1; subg <= K; subg++)
   //   cout << tokens.at(i) << "\n";
 
   // freopen(argv[3],"w",stdout);
-  vector<int>::iterator it;
+  // vector<int>::iterator it;
   // for(int ind = 0; ind < tokens.size(); ind++)
   // {
   //   int w = tokens.at(ind);
@@ -123,25 +123,25 @@ for(int subg = 1; subg <= K; subg++)
   //   }
   // }
 
-  int w;
-  for(int ind = 0; ind < tokens.size(); ind++)
+  long long int w;
+  for(long long int ind = 0; ind < tokens.size(); ind++)
   {
     w = tokens.at(ind);
     if(w>0)
     {
-      pair<int,int> found = Ys.at(ind).second;
+      pair<long long int,long long int> found = Ys.at(ind).second;
       parts.at(found.second - 1).push_back(found.first);
     }
   }
 
   if(sat)
   {
-    int count = 1;
-    for(int ind = 0; ind < parts.size(); ind++)
+    long long int count = 1;
+    for(long long int ind = 0; ind < parts.size(); ind++)
     {
-      vector<int> w = parts.at(ind);
+      vector<long long int> w = parts.at(ind);
       cout <<  "#" << count++ << " " << w.size() << endl;
-      for(int s = 0; s < w.size(); s++)
+      for(long long int s = 0; s < w.size(); s++)
       {
         cout << w.at(s);
         if(s!=w.size()-1)
