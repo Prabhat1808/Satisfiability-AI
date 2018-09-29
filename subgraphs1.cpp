@@ -59,16 +59,19 @@ for(int subg = 1; subg <= K; subg++)
     parts.push_back(tmp);
   }
 
+  bool sat;
   freopen(argv[3],"w",stdout);
   while (getline(infile, line))
   {
     if(line.compare("UNSAT")==0)
     {
       cout<<0;
+      sat = False;
       break;
     }
     if(line.compare("SAT")==0)
     {
+      sat = True;
       continue;
     }
 
@@ -131,19 +134,22 @@ for(int subg = 1; subg <= K; subg++)
     }
   }
 
-  int count = 1;
-  for(int ind = 0; ind < parts.size(); ind++)
+  if(sat)
   {
-    vector<int> w = parts.at(ind);
-    cout <<  "#" << count++ << " " << w.size() << endl;
-    for(int s = 0; s < w.size(); s++)
+    int count = 1;
+    for(int ind = 0; ind < parts.size(); ind++)
     {
-      cout << w.at(s);
-      if(s!=w.size()-1)
+      vector<int> w = parts.at(ind);
+      cout <<  "#" << count++ << " " << w.size() << endl;
+      for(int s = 0; s < w.size(); s++)
       {
-        cout << " ";
+        cout << w.at(s);
+        if(s!=w.size()-1)
+        {
+          cout << " ";
+        }
       }
+      cout << endl;
     }
-    cout << endl;
   }
 }
