@@ -20,16 +20,34 @@ int main(int argc, char* argv[])
   vector<pair<int,pair<int,int> > > Ys;
   vector<int> indices;
 
+  // for(int vert = 1; vert <= V; vert++)
+	// {
+	// 	int temp_vr = V*V + vert;
+	// 	for(int subg = 1; subg <= K; subg++)
+	// 	{
+	// 		Ys.push_back(make_pair(temp_vr,make_pair(vert,subg)));
+  //     indices.push_back(temp_vr);
+	// 		temp_vr += V;
+	// 	}
+	// }
+
+int temp_vr;
+for(int subg = 1; subg <= K; subg++)
+{
+  temp_vr = V*V + (subg-1)*V;
   for(int vert = 1; vert <= V; vert++)
-	{
-		int temp_vr = V*V + vert;
-		for(int subg = 1; subg <= K; subg++)
-		{
-			Ys.push_back(make_pair(temp_vr,make_pair(vert,subg)));
-      indices.push_back(temp_vr);
-			temp_vr += V;
-		}
-	}
+  {
+    temp_vr += 1;
+    Ys.push_back(make_pair(temp_vr,make_pair(vert,subg)));
+    indices.push_back(temp_vr);
+  }
+}
+
+  // cout << "Generated Vertices: \n";
+  // for(int i = 0; i< Ys.size(); i++)
+  // {
+  //   cout << Ys.at(i).first << " -->  " << Ys.at(i).second.first << " " << Ys.at(i).second.second << "\n";
+  // }
 
   ifstream infile(argv[1]);
   string line;
@@ -41,6 +59,7 @@ int main(int argc, char* argv[])
     parts.push_back(tmp);
   }
 
+  freopen(argv[3],"w",stdout);
   while (getline(infile, line))
   {
     if(line.compare("UNSAT")==0)
@@ -55,31 +74,63 @@ int main(int argc, char* argv[])
 
     stringstream check1(line);
     string intermediate;
+    // while(getline(check1, intermediate, ' '))
+    // {
+    //     // tokens.push_back(stoi(intermediate));
+    //     tokens.push_back(atoi(intermediate.c_str()));
+    // }
+    long long int temp_val = 0;
     while(getline(check1, intermediate, ' '))
     {
-        // tokens.push_back(stoi(intermediate));
-        tokens.push_back(atoi(intermediate.c_str()));
-    }
-  }
-
-  vector<int>::iterator it;
-  for(int ind = 0; ind < tokens.size(); ind++)
-  {
-    int w = tokens.at(ind);
-    if(w>0)
-    {
-      it = find (indices.begin(), indices.end(), w);
-      if(it!=indices.end())
+      temp_val = atoi(intermediate.c_str());
+      if(abs(temp_val) > V*V && abs(temp_val) < V*V + K*V + 1)
       {
-        // cout << w << endl;
-        int ind = it - indices.begin();
-        pair<int,int> found = Ys.at(ind).second;
-        // cout << found.first << " , " << found.second << endl;
-        parts.at(found.second - 1).push_back(found.first);
+        tokens.push_back(temp_val);
+      }
+      if(abs(temp_val) > V*V + K*V)
+      {
+          break;
       }
     }
   }
-  freopen(argv[3],"w",stdout);
+
+// cout << Ys.size() << endl;
+// cout << tokens.size() << endl;
+
+  // cout << "Extracted Tokens: \n";
+  // for(int i = 0; i < tokens.size(); i++)
+  //   cout << tokens.at(i) << "\n";
+
+  // freopen(argv[3],"w",stdout);
+  vector<int>::iterator it;
+  // for(int ind = 0; ind < tokens.size(); ind++)
+  // {
+  //   int w = tokens.at(ind);
+  //   if(w>0)
+  //   {
+  //     it = find (indices.begin(), indices.end(), w);
+  //     if(it!=indices.end())
+  //     {
+  //       // cout << w << endl;
+  //       int ind = it - indices.begin();
+  //       pair<int,int> found = Ys.at(ind).second;
+  //       // cout << found.first << " , " << found.second << endl;
+  //       parts.at(found.second - 1).push_back(found.first);
+  //     }
+  //   }
+  // }
+
+  int w;
+  for(int ind = 0; ind < tokens.size(); ind++)
+  {
+    w = tokens.at(ind);
+    if(w>0)
+    {
+      pair<int,int> found = Ys.at(ind).second;
+      parts.at(found.second - 1).push_back(found.first);
+    }
+  }
+
   int count = 1;
   for(int ind = 0; ind < parts.size(); ind++)
   {

@@ -1,5 +1,6 @@
 import sys
 import os
+
 def is_subgraph(G,tempG,s):
 	n = len(s)
 	for i in range(n):
@@ -14,7 +15,7 @@ def is_subgraph(G,tempG,s):
 				except:
 					pass
 	return True
-	
+
 def is_subset(s1,s2):
 	#is s2 a subset of s1
 	if(len(s2)>len(s1)):
@@ -25,7 +26,7 @@ def is_subset(s1,s2):
 				return False
 	return True
 
-	
+
 if not(os.path.isfile(sys.argv[1])):
 	print("ERROR: Input Graph File does not exist")
 	sys.exit(1)
@@ -65,13 +66,13 @@ with open(sys.argv[1],'r') as f:
 				G[x[0]] = [x[1]]
 				tempG[x[0]] = [x[1]]
 		i+=1
-		
+
 for i in range(1,N+1):
 	if i not in G:
 		G[i] = []
 		tempG[i] = []
-i=0  
-subgraph = {}  
+i=0
+subgraph = {}
 for line in lines:
     if line.startswith('#'):
         n = int(line.split(' ')[1].strip())
@@ -90,7 +91,7 @@ for line in lines:
 if i!=K:
 	print('ERROR: Output should have %d subgraphs' %K)
 	sys.exit(1)
-	
+
 for i in range(1,N+1):
 	if len(tempG[i])>0:
 		print('ERROR: Edge %d-%d is not present in any of the subgraphs'%(i,tempG[i][0]))
@@ -102,5 +103,5 @@ for i in range(1,K+1):
 			if is_subset(subgraph[i],subgraph[j]):
 				print('ERROR: subgraph-%d is a subset of subgraph-%d' %(j,i))
 				sys.exit(1)
-		
+
 print('Output is OK')
