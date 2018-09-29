@@ -32,13 +32,15 @@ int main(int argc, char* argv[]){
 	// }
 
 	vector<int> x((V*V)+1);
-	// cout << "Created"
+	// cout << "Created";
 
 	for(long long int i=1;i<=V;i++){
 		for(long long int j=i+1;j<=V;j++){
 			x.at(V*(i-1)+j) = 0;
 		}
 	}
+  // cout << "Created";
+
 	// for(int i=0;i<E;i++){
 	// 	cin>>v1;
 	// 	cin>>v2;
@@ -49,23 +51,95 @@ int main(int argc, char* argv[]){
 	// 		x[V*(v2-1)+v1] = 1;
 	// 	}
 	// }
+  // cout << "Created\n";
+
 	for(long long int i=0;i<E;i++){
 		cin>>v1;
 		cin>>v2;
-		if(v1<v2){
-			x.at(V*(v1-1)+v2) = 1;
-		}
-		else{
-			x.at(V*(v2-1)+v1) = 1;
-		}
+    // cout << v1 << " " << v2 << endl;
+    // try
+    // {
+  		if(v1<v2){
+  			x.at(V*(v1-1)+v2) = 1;
+        // cout << "yo" << endl;
+  		}
+  		else{
+  			x.at(V*(v2-1)+v1) = 1;
+  		}
+    // }
+    // catch (exception& e)
+    // {
+    //   cout << v1 << " " << v2 << endl;
+    // }
 	}
+  // cout << "Created\n";
+  // cout << "Created";
+
+
+  long long int num_var = V*V + V*K + V*V*K + V*K*K + 2*K;
+  //Starting Linear mappings
+  long long count = 0;
+  long long start_y;
+  vector<long long int> mappings(num_var);
+  // cout << "Created\n";
+
+  //For all the X-variables
+  long long int temp_val;
+  for(long long int i = 1; i<= V; i++)
+  {
+    for(long long int j =i+1; j <= V; j++)
+    {
+      temp_val = V*(i-1)+j;
+      mappings.at(temp_val) = count++;
+    }
+  }
+  start_y = count;
+  //For all Y-variables
+  for(long long int k = 1; k <= K; k++)
+  {
+    temp_val = V*V + (k-1)*V;
+    for(long long int i = 1; i<= V; i++)
+    {
+      temp_val += 1;
+      mappings.at(temp_val) = count++;
+    }
+  }
+  //For all Z-variables
+  for(long long int i = 1; i<=V;i++)
+  {
+    for(long long int j=i+1;j<=V;j++)
+    {
+      temp_val = V*V + V*K + (i-1)*V + j;
+      for(long long int k=1; k<= K;k++)
+      {
+        mappings.at(temp_val) = count++;
+        temp_val += V*V;
+      }
+    }
+  }
+  //For all W-variables
+  for(long long int k1=1;k1<=K;k1++)
+  {
+    for(long long int k2=1;k2<=K;k2++)
+    {
+      temp_val = V*V + V*K + V*V*K + (k1-1)*K + k2;
+      for(long long int i = 1;i<=V;i++)
+      {
+        mappings.at(temp_val) = count++;
+        temp_val += K*K;
+      }
+    }
+  }
+
+  //Ending linear mappings
+
 
 	ofstream myfile;
   	myfile.open (argv[2]);
   	myfile<< "p cnf ";
 
   	// long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
-  	long long int num_var = V*V + V*K + V*V*K + V*K*K -1;
+  	// long long int num_var = V*V + V*K + V*V*K + V*K*K;
 
 		// cout << num_var;
 
@@ -74,7 +148,7 @@ int main(int argc, char* argv[]){
   	long long int num_clause = (V*(V-1)*(3*K+1))/2 + (V*(V-1)*(K+1))/2 + (3*V+1)*(K*K - K);
 
   	myfile<<num_clause;
-  	myfile<<"\n";
+  	myfile<<" 0\n";
 
 
 	for(long long int i=1;i<=V;i++){
@@ -84,12 +158,12 @@ int main(int argc, char* argv[]){
 			// str1 << temp;
 			if(x.at(V*(i-1)+j) == 0){
 				myfile << "-";
-				myfile << temp;
+				myfile << mappings.at(temp);
 				myfile << " 0\n";
 				// str = str + "-" + str1.str()+" 0\n";
 			}
 			else{
-				myfile << temp;
+				myfile << mappings.at(temp);
 				myfile << " 0\n";
 			}
 		}
@@ -104,7 +178,7 @@ int main(int argc, char* argv[]){
 			// str1 << temp;
 			// str2<<temp;
 			myfile << "-";
-			myfile << temp1;
+			myfile << mappings.at(temp1);
 
 			// str = str + "-"+ str1.str();
 			temp = V*V + V*K + (i-1)*V + j;
@@ -112,12 +186,12 @@ int main(int argc, char* argv[]){
 			// cout<<str1<<" it\n";
 			for(long long int k=1;k<=K;k++){
 				myfile << " ";
-				myfile << temp;
+				myfile << mappings.at(temp);
 
 				// str = str + " "+ str1.str();
-				my_str<<temp1;
+				my_str<<mappings.at(temp1);
 				my_str<<" -";
-				my_str<<temp;
+				my_str<<mappings.at(temp);
 				my_str<<" 0\n";
 				// str_temp = str_temp + str2.str() + " -" + str1.str()+" 0\n";
 				temp += V*V;
@@ -142,23 +216,23 @@ int main(int argc, char* argv[]){
 			// str3 << temp3;
 			for(long long int k=1;k<=K;k++){
 				myfile<<"-";
-				myfile<<temp1;
+				myfile<<mappings.at(temp1);
 				myfile<<" -";
-				myfile<<temp2;
+				myfile<<mappings.at(temp2);
 				myfile<<" ";
-				myfile<<temp3;
+				myfile<<mappings.at(temp3);
 				myfile<<" 0\n";
 
 				myfile<<"-";
-				myfile<<temp3;
+				myfile<<mappings.at(temp3);
 				myfile<<" ";
-				myfile<<temp1;
+				myfile<<mappings.at(temp1);
 				myfile<<" 0\n";
 
 				myfile<<"-";
-				myfile<<temp3;
+				myfile<<mappings.at(temp3);
 				myfile<<" ";
-				myfile<<temp2;
+				myfile<<mappings.at(temp2);
 				myfile<<" 0\n";
 
 				// str = str + "-" + str1.str() + " -" + str2.str() + " " + str3.str() + " 0\n";
@@ -180,13 +254,13 @@ int main(int argc, char* argv[]){
 				// ostringstream str1;
 				temp = V*V + V*K + V*V*K + (k1-1)*K + k2;
 				// str1<<temp;
-				myfile<<temp;
+				myfile<<mappings.at(temp);
 				//str = str + str1.str();
 				for(long long int i=2;i<=V;i++){
 					temp += K*K;
 					// str1<<temp;
 					myfile<<" ";
-					myfile<<temp;
+					myfile<<mappings.at(temp);
 					//str = str + " " + str1.str();
 				}
 				//str = str + " 0\n";
@@ -207,23 +281,23 @@ int main(int argc, char* argv[]){
 				//str3 << temp3;
 				for(long long int i=1;i<=V;i++){
 
-					myfile<<temp1;
+					myfile<<mappings.at(temp1);
 					myfile<<" -";
-					myfile<<temp2;
+					myfile<<mappings.at(temp2);
 					myfile<<" ";
-					myfile<<temp3;
+					myfile<<mappings.at(temp3);
 					myfile<<" 0\n";
 
 					myfile<<"-";
-					myfile<<temp3;
+					myfile<<mappings.at(temp3);
 					myfile<<" -";
-					myfile<<temp1;
+					myfile<<mappings.at(temp1);
 					myfile<<" 0\n";
 
 					myfile<<"-";
-					myfile<<temp3;
+					myfile<<mappings.at(temp3);
 					myfile<<" ";
-					myfile<<temp2;
+					myfile<<mappings.at(temp2);
 					myfile<<" 0\n";
 
 					// str = str + str1.str() + " -" + str2.str() + " " + str3.str() + " 0\n";
@@ -244,7 +318,7 @@ int main(int argc, char* argv[]){
 
 	ofstream aux;
 	aux.open (argv[3]);
-	aux << V << " " << K << "\n";
+	aux << V << " " << K << " " << start_y <<"\n";
 	aux.close();
 	//Generate my hash mappings
 	// for(int vert = 1; vert <= V; vert++)

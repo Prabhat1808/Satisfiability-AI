@@ -62,7 +62,7 @@ int main(int argc, char* argv[]){
   	long long int num_clause = (V*(V-1)*(3*K+1))/2 + (V*(V-1)*(K+1))/2 + (3*V+1)*(K*K - K);
 
   	myfile<<num_clause;
-  	myfile<<" 0\n";
+  	myfile<<"\n";
 
 
 	for(int i=1;i<=V;i++){
