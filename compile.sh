@@ -1,4 +1,4 @@
 #! /bin/bash
 
-g++ my_sat.cpp -o generate_clauses
-g++ subgraphs.cpp -o generate_subgraphs
+g++ my_sat1.cpp -o generate_clauses
+g++ subgraphs1.cpp -o generate_subgraphs

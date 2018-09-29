@@ -45,10 +45,14 @@ int main(int argc, char* argv[]){
   	myfile.open (argv[2]);
   	myfile<< "p cnf ";
 
-  	// long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
-  	long long int num_var = V*V + V*K + V*V*K + V*K*K;
+  	long long int num_var = (V*(V-1))/2 + V*K + (V*(V-1)*K)/2 + V*(K*K - K);
+  	//long long int num_var = V*V + V*K + V*V*K + V*K*K;
 
-  	int hasharray[num_var];
+  	int hasharray[V*V + V*K + V*V*K + V*K*K];
+  	
+  	for(int i=0;i<(V*V + V*K + V*V*K + V*K*K);i++)
+  		hasharray[i] = 0;
+
   	long long int counter = 1;
 		// cout << num_var;
 
@@ -120,8 +124,8 @@ int main(int argc, char* argv[]){
 	}
 	long long int to_return = counter;
 	for(int k=1;k<=K;k++){
-		temp = V*V + (K-1)*V;
-		for(int i=1;i<=N;i++){
+		temp = V*V + (k-1)*V;
+		for(int i=1;i<=V;i++){
 			temp+=1;
 			hasharray[temp] = counter;
 			counter++;
@@ -176,17 +180,26 @@ int main(int argc, char* argv[]){
 				// ostringstream str1;
 				temp = V*V + V*K + V*V*K + (k1-1)*K + k2;
 				// str1<<temp;
-				hasharray[temp] = counter;
-				myfile<<counter;
-				counter++;
+				if(hasharray[temp]==0){
+					hasharray[temp] = counter;
+					myfile<<counter;
+					counter++;
+				}
+				else
+					myfile<<hasharray[temp];
 				//str = str + str1.str();
 				for(int i=2;i<=V;i++){
 					temp += K*K;
 					// str1<<temp;
 					myfile<<" ";
-					hasharray[temp] = counter;
-					myfile<<counter;
-					counter++;
+
+					if(hasharray[temp]==0){
+						hasharray[temp] = counter;
+						myfile<<counter;
+						counter++;
+					}
+					else
+						myfile<<hasharray[temp];
 					//str = str + " " + str1.str();
 				}
 				//str = str + " 0\n";
