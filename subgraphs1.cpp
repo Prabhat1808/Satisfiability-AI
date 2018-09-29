@@ -12,10 +12,10 @@ int main(int argc, char* argv[])
   ostringstream my_str;
 
   ifstream aux(argv[2]);
-  long long int V,K;
+  long long int V,K,y_start;
   // cin>>V;
   // cin>>K;
-  aux >> V >> K;
+  aux >> V >> K >> y_start;
 
   vector<pair<long long int,pair<int,int> > > Ys;
   vector<long long int> indices;
@@ -83,11 +83,11 @@ for(int subg = 1; subg <= K; subg++)
     while(getline(check1, intermediate, ' '))
     {
       temp_val = atoi(intermediate.c_str());
-      if(abs(temp_val) > V*V && abs(temp_val) < V*V + K*V + 1)
+      if(abs(temp_val) >= y_start && abs(temp_val) < K*V + y_start + 1)
       {
         tokens.push_back(temp_val);
       }
-      if(abs(temp_val) > V*V + K*V)
+      if(abs(temp_val) > y_start + K*V + 1)
       {
           break;
       }
@@ -126,7 +126,7 @@ for(int subg = 1; subg <= K; subg++)
     w = tokens.at(ind);
     if(w>0)
     {
-      pair<int,int> found = Ys.at(ind).second;
+      pair<int,int> found = Ys.at(w-y_start).second;
       parts.at(found.second - 1).push_back(found.first);
     }
   }
