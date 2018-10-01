@@ -71,7 +71,7 @@ int main(int argc, char* argv[]){
 
   	myfile<<num_var;
   	myfile<<" ";
-  	long long int num_clause = (V*(V-1)*(3*K+1))/2 + (V*(V-1)*(K+1))/2 + (3*V+1)*(K*K - K);
+  	long long int num_clause = (V*(V-1)*(3*K+1))/2 + (V*(V-1)*(K+1))/2 + (3*V+1)*(K*K - K) + V;
 
   	myfile<<num_clause;
   	myfile<<"\n";
@@ -94,8 +94,22 @@ int main(int argc, char* argv[]){
 			}
 		}
 	}
+
 	long long int temp1,temp2,temp3;
 	// string str_temp = "";
+
+	for(long long int i=1;i<=V;i++){
+		temp = V*V + i;
+		myfile << temp;
+		temp+=V;
+		for(long long int k=2;k<=K;k++){
+			myfile << " ";
+			myfile << temp;
+			temp+=V;
+		}
+		myfile <<" 0\n";
+	}
+
 	for(long long int i=1;i<=V;i++){
 		for(long long int j=i+1;j<=V;j++){
 			ostringstream my_str;
